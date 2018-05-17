@@ -2458,6 +2458,11 @@ violinplot.__doc__ = dedent("""\
     {dodge}
     {orient}
     {linewidth}
+    dashpattern : string, optional
+        If ``inner == quartile``, and this option is not None, use this pattern to
+        dash upper quartile, lower quartile, and median lines. If this is None,
+        dashes are proportional to ``linewidth``, defualt is None.
+        Use ``dashpattern='-'`` for solid lines.
     {color}
     {palette}
     {saturation}
@@ -2534,6 +2539,16 @@ violinplot.__doc__ = dedent("""\
         >>> ax = sns.violinplot(x="day", y="total_bill", hue="sex",
         ...                     data=tips, palette="Set2", split=True,
         ...                     scale="count", inner="quartile")
+
+    Draw the quartiles as solid horizontal lines instead of dashed.
+
+    .. plot::
+        :context: close-figs
+
+        >>> ax = sns.violinplot(x="day", y="total_bill", hue="sex",
+        ...                     data=tips, palette="Set2", split=True,
+        ...                     scale="count", inner="quartile",
+        ...                     dashpattern='-')
 
     Show each observation with a stick inside the violin:
 
