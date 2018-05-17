@@ -894,6 +894,7 @@ class TestViolinPlotter(CategoricalFixture):
                        bw="scott", cut=2, scale="area", scale_hue=True,
                        gridsize=100, width=.8, inner="box", split=False,
                        dodge=True, orient=None, linewidth=None,
+                       dashpattern=None,
                        color=None, palette=None, saturation=.75)
 
     def test_split_error(self):
