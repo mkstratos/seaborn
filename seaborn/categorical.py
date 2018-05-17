@@ -1031,10 +1031,10 @@ class _ViolinPlotter(_CategoricalPlotter):
         """Draw the quartiles as lines at width of density."""
         q25, q50, q75 = np.percentile(data, [25, 50, 75])
         if self.dashpattern is None:
-             dashes_q = {'dashes': [self.linewidth * 1.5] * 2}
-             dashes_m = {'dashes': [self.linewidth * 3.0] * 2}
-             lw_median = self.linewidth
-             lw_quart = self.linewidth
+            dashes_q = {'dashes': [self.linewidth * 1.5] * 2}
+            dashes_m = {'dashes': [self.linewidth * 3.0] * 2}
+            lw_median = self.linewidth
+            lw_quart = self.linewidth
         else:
             dashes_q = {'linestyle': self.dashpattern}
             dashes_m = {'linestyle': self.dashpattern}
