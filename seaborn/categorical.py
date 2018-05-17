@@ -552,7 +552,7 @@ class _ViolinPlotter(_CategoricalPlotter):
     def __init__(self, x, y, hue, data, order, hue_order,
                  bw, cut, scale, scale_hue, gridsize,
                  width, inner, split, dodge, orient, linewidth,
-                 color, palette, saturation):
+                 dashpattern, color, palette, saturation):
 
         self.establish_variables(x, y, hue, data, orient, order, hue_order)
         self.establish_colors(color, palette, saturation)
@@ -579,6 +579,7 @@ class _ViolinPlotter(_CategoricalPlotter):
         if linewidth is None:
             linewidth = mpl.rcParams["lines.linewidth"]
         self.linewidth = linewidth
+        self.dashpattern = dashpattern
 
     def estimate_densities(self, bw, cut, scale, scale_hue, gridsize):
         """Find the support and density for all of the data."""
@@ -1028,16 +1029,23 @@ class _ViolinPlotter(_CategoricalPlotter):
     def draw_quartiles(self, ax, data, support, density, center, split=False):
         """Draw the quartiles as lines at width of density."""
         q25, q50, q75 = np.percentile(data, [25, 50, 75])
+        if self.dashpattern is None:
+             dashes_q = {'dashes': [self.linewidth * 1.5] * 2}
+             dashes_m = {'dashes': [self.linewidth * 3.0] * 2}
+             lw_median = self.linewidth
+             lw_quart = self.linewidth
+        else:
+            dashes_q = {'linestyle': self.dashpattern}
+            dashes_m = {'linestyle': self.dashpattern}
+            lw_median = self.linewidth
+            lw_quart = self.linewidth * 0.5
 
         self.draw_to_density(ax, center, q25, support, density, split,
-                             linewidth=self.linewidth,
-                             dashes=[self.linewidth * 1.5] * 2)
+                             linewidth=lw_quart, **dashes_q)
         self.draw_to_density(ax, center, q50, support, density, split,
-                             linewidth=self.linewidth,
-                             dashes=[self.linewidth * 3] * 2)
+                             linewidth=lw_median, **dashes_m)
         self.draw_to_density(ax, center, q75, support, density, split,
-                             linewidth=self.linewidth,
-                             dashes=[self.linewidth * 1.5] * 2)
+                             linewidth=lw_quart, **dashes_q)
 
     def draw_points(self, ax, data, center):
         """Draw individual observations as points at middle of the violin."""
@@ -2363,13 +2371,13 @@ boxplot.__doc__ = dedent("""\
 def violinplot(x=None, y=None, hue=None, data=None, order=None, hue_order=None,
                bw="scott", cut=2, scale="area", scale_hue=True, gridsize=100,
                width=.8, inner="box", split=False, dodge=True, orient=None,
-               linewidth=None, color=None, palette=None, saturation=.75,
-               ax=None, **kwargs):
+               linewidth=None, dashpattern=None, color=None, palette=None,
+               saturation=.75, ax=None, **kwargs):
 
     plotter = _ViolinPlotter(x, y, hue, data, order, hue_order,
                              bw, cut, scale, scale_hue, gridsize,
                              width, inner, split, dodge, orient, linewidth,
-                             color, palette, saturation)
+                             dashpattern, color, palette, saturation)
 
     if ax is None:
         ax = plt.gca()
